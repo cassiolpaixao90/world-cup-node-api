@@ -2,10 +2,7 @@ import {Router}                                 from "express";
 import colors                                   from "colors";
 
 exports.get  = (req, res, next) => {
-    res.status(200).send({
-        title: "Node Iot API",
-        version: "0.0.2"
-    });
+    res.status(200).send({});
     console.log(colors.yellow("router index"));
 };
 
