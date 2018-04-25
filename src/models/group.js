@@ -1,6 +1,7 @@
 'use strict';
 
-import mongoose         from "mongoose";
+import mongoose              from "mongoose";
+import PartidaWorldCupSchema from "./partida";
 
 const Schema     = mongoose.Schema;
 const GroupWorldCupSchema = new Schema({
@@ -10,7 +11,7 @@ const GroupWorldCupSchema = new Schema({
         required:   true,
         unique:     true
     },
-    classficacao : [classficacao]
+    classficacao : [PartidaWorldCupSchema]
 
 });
 
