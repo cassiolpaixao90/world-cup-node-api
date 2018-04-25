@@ -17,7 +17,6 @@ const http = require("http").Server(app);
 // require('./models/user');
 
 
-
 // require('./data_access/connectionProvider')('mongodb://iot-sensor:iot2018@ds135747.mlab.com:35747/iot-sensor');
 app.use(morgan("common", {
   stream: {
