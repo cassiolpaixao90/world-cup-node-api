@@ -109,7 +109,8 @@ exports.refreshToken = async(token) => {
 
 exports.authorize = function (req, res, next) {
 
-    const token = req.body.token || req.query.token ||  req.headers.authorization.split(' ')[1];
+    const token = req.get('authorization');
+    console.log("token", token);
     if (!token) {
         res.json({message: 'Acesso não permitido!', status: 401});
     } else {

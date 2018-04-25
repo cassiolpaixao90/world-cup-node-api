@@ -40,3 +40,15 @@ export const loginSchema = {
         }
     }
 };
+
+export const groupSchema = {
+    "nome": {
+        notEmpty: false,
+        isLength: {
+            options: [{max: 200}],
+            errorMessage: "O nome deve ter menos de 200 caracteres"
+        }
+    }
+};
+
+
