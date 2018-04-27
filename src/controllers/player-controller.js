@@ -1,7 +1,7 @@
 'use strict';
 
 import {groupSchema} from "../validators/validationSchemas";
-import groupService from "../services/group-service";
+import playerService from "../services/player-service";
 import WorldCupError from '../exception/exception';
 
 exports.register = async (req, res, next) => {
@@ -13,14 +13,10 @@ exports.register = async (req, res, next) => {
         if (errors) {
             throw new WorldCupError(errors, 500);
         }
-        console.log("chegou aqui")
-        const {nome} = req.body;
-        const data = {
-            nome: nome
-        };
-
-        await groupService.save(data);
-        res.json({message: "Grupo registrado com sucesso!", status: 201});
+        
+        const data = req.body;
+        await playerService.save(data);
+        res.json({message: "Player registrado com sucesso!", status: 201});
 
     } catch (e) {
         res.status(e.status).json({message: e.message, status: e.status});

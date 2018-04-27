@@ -41,7 +41,7 @@ export const loginSchema = {
     }
 };
 
-export const groupSchema = {
+export const countrySchema = {
     "nome": {
         notEmpty: false,
         isLength: {

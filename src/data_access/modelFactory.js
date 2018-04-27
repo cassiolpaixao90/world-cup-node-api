@@ -1,7 +1,9 @@
 "use strict";
 
 import { UserSchema }                           from "../models/user";
-import { GroupWorldCupSchema }                  from "../models/group";
+import { CountrySchema }                        from "../models/country";
+import { MatchesSchema }                        from "../models/matches";
+import { PlayerSchema }                         from "../models/player";
 import connectionProvider                       from "./connectionProvider";
 import config                                   from "../../settings/environment";
 
@@ -14,10 +16,28 @@ export const getUserModel = async  () => {
     }
 };
 
-export const getGroupWorldCup = async  () => {
+export const getCountryModel = async  () => {
     try {
         const conn = await connectionProvider( config.mongo.uri );
-        return conn.model("GroupWorldCup", GroupWorldCupSchema);
+        return conn.model("CountrySchema", CountrySchema);
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getPlayerModel = async  () => {
+    try {
+        const conn = await connectionProvider( config.mongo.uri );
+        return conn.model("PlayerSchema", PlayerSchema);
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getMatchesModel = async  () => {
+    try {
+        const conn = await connectionProvider( config.mongo.uri );
+        return conn.model("MatchesSchema", MatchesSchema);
     } catch (err) {
         throw err;
     }
