@@ -2,13 +2,13 @@
 /* eslint-disable no-console */
 
 import express, { Router } from "express";
-import bodyParser from "body-parser";
-import expressValidator from "express-validator";
-import apiRouteConfig from "./configuration/apiRouterConfig";
-import mongoose from "mongoose";
-import morgan from "morgan";
-import logger from "./logger/logger";
-import requestIp from "request-ip";
+import bodyParser          from "body-parser";
+import expressValidator    from "express-validator";
+import apiRouteConfig      from "./configuration/apiRouterConfig";
+import mongoose            from "mongoose";
+import morgan              from "morgan";
+import logger              from "./logger/logger";
+import requestIp           from "request-ip";
  
 
 const app = express();
