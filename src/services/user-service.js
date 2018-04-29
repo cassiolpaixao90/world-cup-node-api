@@ -1,9 +1,9 @@
-import {getUserModel}       from "../data_access/modelFactory";
-import repository           from "../repositories/user-repository";
-import jwt                  from "jsonwebtoken";
-import crypto               from 'crypto';
-import WorldCupError        from '../exception/exception';
-import config               from "../../settings/environment";
+import { getUserModel, getLoginModel } from "../data_access/modelFactory";
+import repository from "../repositories/user-repository";
+import jwt from "jsonwebtoken";
+import crypto from 'crypto';
+import WorldCupError from '../exception/exception';
+import config from "../../settings/environment";
 
 const generateToken = async (data) => {
     return jwt.sign(data, config.secrets.salt, { expiresIn: '1d' });
@@ -13,65 +13,54 @@ const decodeToken = async (token) => {
     return await jwt.verify(token, config.secrets.salt);
 }
 
-const cryptoPassword = (password) => {
-    let salt        = Math.round((Date.now() * Math.random())) + '';
-    let newHash     = crypto.createHash('sha512')
-                                   .update(salt +  password, 'utf8')
-                                   .digest('hex');
-
-    return {
-        salt   : salt,
-        newHash: newHash
-    }
-}
-
-const descrypPassword = (user, password) => {
-    const newHash   =  crypto.createHash('sha512')
-                                     .update(user.salt + password, 'utf8')
-                                     .digest('hex');
-    return {
-        newHash: newHash
-    }
-}
-
 exports.save = async (data) => {
 
     try {
 
-        const User           = await getUserModel();
-        const existingUser   = await repository.getByEmail(data.email, User);
+        const User = await getUserModel();
+        const existingUser = await repository.getByEmail(data.email, User);
 
         if (existingUser) {
             throw new WorldCupError(`O e-mail ${data.email} já existe.`, 409);
         }
 
-        const newPassword = cryptoPassword(data.password);
-        data.password = newPassword.newHash;
-        data.salt = newPassword.salt;
-
-        console.log("registro dados", data);
         await repository.create(data, User);
     }
-    catch(e){
+    catch (e) {
         throw new WorldCupError(e.message, e.status);
     }
 };
 
-exports.authenticate =  async (data,req) => {
+exports.authenticate = async (data, req) => {
 
     try {
-        const User         = await getUserModel();
+        const User = await getUserModel();
         const existingUser = await repository.getByEmail(data.email, User);
-        if(!existingUser){
+        
+        if (!existingUser) {
             throw new WorldCupError(`Usuario ${data.email} não cadastrado!`, 409);
         }
 
-        const descrypt = descrypPassword(existingUser, data.password) ;
-        const ret = descrypt.newHash === existingUser.password;
-        if(!ret){
-          throw new WorldCupError("Usuário ou senha inválidos",404);
+        const {clientIp} = req;
+        console.log("clientIp", clientIp);
+        const identityKey = `${data.email}-${clientIp}`;
+        const Login = await getLoginModel();
+
+        if (!await existingUser.passwordIsValid(data.password)) {
+            await Login.failedLoginAttempt(identityKey);
+            throw new WorldCupError("Usuário ou senha inválidos", 404);
         }
 
+        if( !await Login.canAthenticate(identityKey)){
+            throw new WorldCupError("Está conta está temporariamente bloqueada!", 500);
+        }
+
+        if( await Login.inProgress(identityKey)){
+            throw new WorldCupError("Usuário já está autenticado!", 500);
+        }
+
+        console.log("successfulLoginAttempt");
+        await Login.successfulLoginAttempt(identityKey);
         return await generateToken({
             id: existingUser._id,
             email: existingUser.email,
@@ -85,21 +74,21 @@ exports.authenticate =  async (data,req) => {
 
 };
 
-exports.refreshToken = async(token) => {
+exports.refreshToken = async (token) => {
     try {
 
-        const User         = await getUserModel();
-        const data         = await decodeToken(token);
-        const user         = await repository.getById(data.id, User);
+        const User = await getUserModel();
+        const data = await decodeToken(token);
+        const user = await repository.getById(data.id, User);
 
         if (!user) {
             throw new WorldCupError("Token não encontrado!", 404);
         }
 
         return await generateToken({
-            id:    user._id,
+            id: user._id,
             email: user.email,
-            name:  user.name,
+            name: user.name,
             roles: user.roles
         });
     } catch (e) {
@@ -111,7 +100,7 @@ exports.authorize = function (req, res, next) {
 
     const token = req.get('authorization');
     if (!token) {
-        res.json({message: 'Acesso não permitido!', status: 401});
+        res.json({ message: 'Acesso não permitido!', status: 401 });
     } else {
         jwt.verify(token, config.secrets.salt, (error, decoded) => {
             if (error) {

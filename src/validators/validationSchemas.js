@@ -17,7 +17,7 @@ export const registrationSchema = {
             options: ["(?=.*[a-zA-Z])(?=.*[0-9]+).*", "g"],
             errorMessage: "A senha deve ser alfanumérica."
         },
-        errorMessage: "Invalid password"
+        errorMessage: "Senha password"
     },
     "name": {
         notEmpty: false,

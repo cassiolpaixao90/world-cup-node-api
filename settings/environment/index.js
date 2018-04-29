@@ -34,7 +34,7 @@ const all = {
     }
 };
 
-module.exports = _.merge(all, require('./' + process.env.NODE_ENV + '.js' || {}));
+module.exports = _.assign(all, require('./' + process.env.NODE_ENV + '.js' || {}));
 
 
 

@@ -1,6 +1,6 @@
 "use strict";
 
-import { UserSchema }                           from "../models/user";
+import { UserSchema, LoginSchema }              from "../models/user";
 import { CountrySchema }                        from "../models/country";
 import { MatchesSchema }                        from "../models/matches";
 import { PlayerSchema }                         from "../models/player";
@@ -38,6 +38,15 @@ export const getMatchesModel = async  () => {
     try {
         const conn = await connectionProvider( config.mongo.uri );
         return conn.model("MatchesSchema", MatchesSchema);
+    } catch (err) {
+        throw err;
+    }
+};
+
+export const getLoginModel = async  () => {
+    try {
+        const conn = await connectionProvider( config.mongo.uri );
+        return conn.model("LoginSchema", LoginSchema);
     } catch (err) {
         throw err;
     }

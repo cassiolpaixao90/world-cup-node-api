@@ -8,16 +8,12 @@ import apiRouteConfig from "./configuration/apiRouterConfig";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import logger from "./logger/logger";
-
+import requestIp from "request-ip";
+ 
 
 const app = express();
 const http = require("http").Server(app);
-// Connecta ao banco
-// mongoose.connect("mongodb://iot-sensor:iot2018@ds135747.mlab.com:35747/iot-sensor");
-// require('./models/user');
 
-
-// require('./data_access/connectionProvider')('mongodb://iot-sensor:iot2018@ds135747.mlab.com:35747/iot-sensor');
 app.use(morgan("common", {
   stream: {
     write: function (mensagem) {
@@ -34,6 +30,8 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
+//get Ip request
+app.use(requestIp.mw())
 
 //configuracao para validacao dos campos
 app.use(expressValidator());
