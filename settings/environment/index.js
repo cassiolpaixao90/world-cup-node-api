@@ -3,7 +3,6 @@
 import _ from 'lodash';
 
 process.env.NODE_ENV =  process.env.NODE_ENV || 'development';
-console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 const setting = require('./' + process.env.NODE_ENV + '.js' || {})
 
 const all = {

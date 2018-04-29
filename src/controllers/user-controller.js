@@ -45,7 +45,6 @@ exports.authenticate = async (req, res, next) => {
         };
 
         const user = await userService.authenticate(data, req);
-        console.log("user", user);
         res.json({message: "Usuario logado com sucesso!", status: 200, "token": user});
 
     } catch (e) {
