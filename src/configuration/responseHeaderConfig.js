@@ -9,12 +9,12 @@ const responseHeaderConfig = (app) => {
 
         directives: {
             defaultSrc: ["'none'"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "http://code.jquery.com"],
-            styleSrc:["'self'", "'unsafe-inline'", "https:/fonts.googleapis.com"],
-            imgSrc:["'self'", "'data:'"],
-            fontSrc:["'self'", "https:/fonts.gstatic.com", "data:"],
+            scriptSrc:  ["'self'", "'unsafe-inline'", "http://code.jquery.com"],
+            styleSrc:   ["'self'", "'unsafe-inline'", "https:/fonts.googleapis.com"],
+            imgSrc:     ["'self'", "'data:'"],
+            fontSrc:    ["'self'", "https:/fonts.gstatic.com", "data:"],
             connectSrc: ["'self'"],
-            reportUri: "/cspviolation"
+            reportUri:  "/cspviolation"
         }
     }));
 };
