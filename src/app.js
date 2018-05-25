@@ -11,17 +11,9 @@ import morgan                 from "morgan";
 import logger                 from "./logger/logger";
 import webpack                from "webpack";
 import requestIp              from "request-ip";
-import config                 from "../webpack.config.dev";
-
 
 const app = express();
 const http = require("http").Server(app);
-const compiler = webpack(config);
-
-// app.use(require('webpack-dev-middleware')(compiler, {
-//   noInfo: true,
-//   publicPath: config.output.publicPath
-// }));
 
 //scp
 responseHeaderConfig(app);
