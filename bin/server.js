@@ -1,5 +1,5 @@
 import http from "../src/app";
-import  config  from "../settings/environment/index";
+import config  from "../settings/environment/index";
 
 const port = normalizePort(config.server.port);
 

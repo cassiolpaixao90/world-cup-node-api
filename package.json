@@ -3,10 +3,16 @@
   "version": "1.0.0",
   "description": "world cup + api + node + rest ",
   "scripts": {
-    "start": "nodemon --exec npm run babel-node -- src/clusters.js",
+    "prestart": "node ./src/utils/utils.js",
+    "start": "npm-run-all --parallel security-check open:src",
+    "open:src":"nodemon --exec npm run babel-node -- src/clusters.js",
     "babel-node": "babel-node --presets=env",
     "test": "echo \"Error: no test specified\" && nexit 1",
-    "test-integration": "NODE_ENV=test mocha --opts src/test/integration/mocha.opts test/integration/**/*.js"
+    "test-integration": "NODE_ENV=test mocha --opts src/test/integration/mocha.opts test/integration/**/*.js",
+    "security-check":"nsp check",
+    "share": "lt --port 3000",
+    "localtunnel": "npm-run-all --parallel open:src localtunnel"
+
   },
   "repository": {
     "type": "git",
