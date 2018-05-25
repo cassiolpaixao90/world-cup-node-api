@@ -9,13 +9,21 @@ import responseHeaderConfig   from "./configuration/responseHeaderConfig";
 import mongoose               from "mongoose";
 import morgan                 from "morgan";
 import logger                 from "./logger/logger";
+import webpack                from "webpack";
 import requestIp              from "request-ip";
- 
+import config                 from "../webpack.config.dev";
+
 
 const app = express();
 const http = require("http").Server(app);
+const compiler = webpack(config);
 
-//scp 
+// app.use(require('webpack-dev-middleware')(compiler, {
+//   noInfo: true,
+//   publicPath: config.output.publicPath
+// }));
+
+//scp
 responseHeaderConfig(app);
 
 app.use(morgan("common", {
@@ -46,7 +54,7 @@ apiRouteConfig(app);
 // Habilita o CORS
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://192.168.0.102:3000');
-  res.header('Access-Control-Allow-Credentials', 'true')
+  res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers', 'Authorization, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   next();

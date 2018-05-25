@@ -14,7 +14,6 @@ export default function (url, options) {
 
     return new Promise(function (resolve, reject) {
         const address = `${url}`;
-        console.log('address', address);
         if (!(_internalConnectionPool[address])) {
             try {
                 const conn = mongoose.createConnection(address, opts);
@@ -22,8 +21,9 @@ export default function (url, options) {
                     _internalConnectionPool[address] = conn;
                     resolve(_internalConnectionPool[address]);
                 });
-
-                conn.on("error", function (err) { console.error("MongoDB error: %s", err); });
+                conn.on("error", function (err) {
+                  console.error("MongoDB error: %s", err);
+                });
             } catch (err) {
                 reject(err);
             }

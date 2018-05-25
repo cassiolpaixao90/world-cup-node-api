@@ -3,11 +3,9 @@
 import {registrationSchema, loginSchema} from "../validators/validationSchemas";
 import userService from "../services/user-service";
 import WorldCupError from '../exception/exception';
-
+import messageProperties from "../utils/messageProperties";
 exports.register = async (req, res, next) => {
-
     try {
-
         req.checkBody(registrationSchema);
         const errors = req.validationErrors();
         if (errors) {
@@ -20,10 +18,8 @@ exports.register = async (req, res, next) => {
             password: password,
             roles: ["user"]
         };
-
         await userService.save(data);
-        res.json({message: "Usuario registrado com sucesso!", status: 201});
-
+        res.json({message: messageProperties.MESSAGE_SUCCESS, status: 201});
     } catch (e) {
         res.status(e.status).json({message: e.message, status: e.status});
     }
@@ -31,22 +27,18 @@ exports.register = async (req, res, next) => {
 
 exports.authenticate = async (req, res, next) => {
     try {
-
         req.checkBody(loginSchema);
         const errors = req.validationErrors();
         if (errors) {
             throw new WorldCupError(errors, 500);
         }
-
         const {email, password} = req.body;
         const data = {
             email: email,
             password: password
         };
-
         const user = await userService.authenticate(data, req);
-        res.json({message: "Usuario logado com sucesso!", status: 200, "token": user});
-
+        res.json({message: messageProperties.MESSAGE_LOGADO, status: 200, "token": user});
     } catch (e) {
         res.status(e.status).json({message: e.message, status: e.status});
     }

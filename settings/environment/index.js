@@ -1,9 +1,9 @@
-'use strict'
+'use strict';
 
 import _ from 'lodash';
 
 process.env.NODE_ENV =  process.env.NODE_ENV || 'development';
-const setting = require('./' + process.env.NODE_ENV + '.js' || {})
+const setting = require('./' + process.env.NODE_ENV + '.js' || {});
 
 const all = {
 
