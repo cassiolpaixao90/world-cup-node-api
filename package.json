@@ -5,14 +5,15 @@
   "scripts": {
     "prestart": "babel-node ./src/utils/utils.js",
     "start": "npm-run-all --parallel security-check open:src",
-    "open:src":"nodemon --exec npm run babel-node -- src/clusters.js",
+    "open:src": "nodemon --exec npm run babel-node -- src/clusters.js",
     "babel-node": "babel-node --presets=env",
     "test": "echo \"Error: no test specified\" && nexit 1",
     "test-integration": "NODE_ENV=test mocha --opts src/test/integration/mocha.opts test/integration/**/*.js",
-    "security-check":"nsp check",
+    "security-check": "nsp check",
     "share": "lt --port 3000",
-    "localtunnel": "npm-run-all --parallel open:src localtunnel"
-
+    "localtunnel": "npm-run-all --parallel open:src localtunnel",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -53,7 +54,8 @@
     "request-ip": "^2.0.2",
     "socket.io": "^2.0.4",
     "winston": "^2.1.1",
-    "lodash": "latest"
+    "lodash": "latest",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -93,5 +95,6 @@
     "webpack-dev-middleware": "1.8.4",
     "webpack-hot-middleware": "2.13.0",
     "webpack-md5-hash": "0.0.5"
-  }
+  },
+  "snyk": true
 }
